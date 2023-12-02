@@ -49,5 +49,49 @@ namespace RecipeApp.Controllers
 
             return View(recipe);
         }
+
+        public IActionResult Edit(string Id)
+        {
+            ObjectId recipeId = new ObjectId(Id);
+            MongoClient dbClient = new MongoClient();
+
+            var database = dbClient.GetDatabase("recipe_app");
+            var collection = database.GetCollection<Recipe>("recipes");
+
+            Recipe recipe = collection.Find(r => r.Id == recipeId).FirstOrDefault();
+
+            return View(recipe);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(string Id, Recipe recipe)
+        {
+            ObjectId recipeId = new ObjectId(Id);
+            MongoClient dbClient = new MongoClient();
+
+            var database = dbClient.GetDatabase("recipe_app");
+            var collection = database.GetCollection<Recipe>("recipes");
+
+            recipe.Id = recipeId;
+            collection.ReplaceOne(r => r.Id == recipeId, recipe);
+
+            return Redirect("/Recipes");
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string Id)
+        {
+            ObjectId recipeId = new ObjectId(Id);
+            MongoClient dbClient = new MongoClient();
+
+            var database = dbClient.GetDatabase("recipe_app");
+            var collection = database.GetCollection<Recipe>("recipes");
+
+            collection.DeleteOne(r => r.Id == recipeId);
+
+            return Redirect("/Recipes");
+        }
+
     }
 }

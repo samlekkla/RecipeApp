@@ -8,7 +8,17 @@
 
 @foreach (Recipe recipe in Model)
 {
-    <p>@recipe.Name <a href="/Recipes/Show/@recipe.Id">Show</a></p>
+    <div>
+        <p>
+            <strong>@recipe.Name</strong>
+            <a href="/Recipes/Show/@recipe.Id">Show</a>
+        </p>
+        <form action="/Recipes/Delete/@recipe.Id" method="post">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
 }
 
-<a href="/Recipes/Create">Create recipe</a>
+<div>
+    <a href="/Recipes/Create">Create Recipe</a>
+</div>
